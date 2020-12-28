@@ -3,16 +3,17 @@ import os
 from flask import Flask
 from flask import render_template, redirect
 from forms import MoneyForm
-from db import StdPay
+from db import StdPay, Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from hashlib import sha256
 
-print(os.path.join(os.environ.get('ROOT') + '/piastrix/templates/'))
-app = Flask(__name__, template_folder=os.path.join(os.environ.get('ROOT') + '/piastrix/templates/'))
+
+app = Flask(__name__, template_folder='../../templates/')
 app.config['SECRET_KEY'] = 'my_secret_key'
 
 engine = create_engine('postgresql+psycopg2://piastrix_USER:piastrix_PASS_[h5Z\wa3u-n`g?5B@postgres:5430/piastrix_DB')
+Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 

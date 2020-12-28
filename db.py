@@ -22,5 +22,5 @@ class StdPay(Base):
     shop_refund = Column(Float, default=None)
 
 
-# engine = create_engine('postgresql+psycopg2://postgres:postgres@localhost:5432/piastr')
-# Base.metadata.create_all(engine)
+#engine = create_engine('postgresql+psycopg2://piastrix_USER:piastrix_PASS_[h5Z\wa3u-n`g?5B@postgres:5430/piastrix_DB')
+#Base.metadata.create_all(engine)
