@@ -1,18 +1,18 @@
 import requests
-
+import os
 from flask import Flask
-from flask import render_template, jsonify, make_response, redirect
+from flask import render_template, redirect
 from forms import MoneyForm
 from db import StdPay
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from hashlib import sha256
 
-
-app = Flask(__name__, template_folder='/home/yankevych/repos/daсk_side/piastrix/templates/')
+print(os.path.join(os.environ.get('ROOT') + '/piastrix/templates/'))
+app = Flask(__name__, template_folder=os.path.join(os.environ.get('ROOT') + '/piastrix/templates/'))
 app.config['SECRET_KEY'] = 'my_secret_key'
 
-engine = create_engine('postgresql+psycopg2://postgres:postgres@localhost:5432/piastr')
+engine = create_engine('postgresql+psycopg2://piastrix_USER:piastrix_PASS_[h5Z\wa3u-n`g?5B@postgres:5430/piastrix_DB')
 Session = sessionmaker(bind=engine)
 session = Session()
 
@@ -114,8 +114,3 @@ def raw23():
         # return make_response(jsonify(success=True), 200)
 
     return render_template('base.html', form=form)
-
-
-if __name__ == '__main__':
-    app.debug = True
-    app.run(host='0.0.0.0')

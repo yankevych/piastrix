@@ -1,0 +1,57 @@
+version: '3.8'
+volumes:
+  pgdata:
+  static:
+  media:
+  web-root:
+  certbot-etc:
+  certbot-var:
+services:
+  python: &python
+    build:
+      context: .
+      dockerfile: docker/python/Dockerfile
+    environment:
+      FLASK_ENV: development
+    volumes:
+      - web-root:/var/www/html
+    ports:
+      - 5000:5000
+    command: gunicorn wsgi:app -b 0.0.0.0:5000
+
+  postgres:
+    image: postgres:12.4
+    environment:
+      POSTGRES_USER: piastrix_USER
+      POSTGRES_DB: piastrix_DB
+      POSTGRES_PASSWORD: piastrix_PASS_[h5Z\wa3u-n`g?5B
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/:/docker-entrypoint-initdb.d
+    ports:
+      - 5430:5430
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
+      - ./docker/nginx:/etc/nginx/conf.d
+    ports:
+      - 80:80
+      - 443:443
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
+    depends_on:
+      - nginx
+#    command: certonly --webroot --webroot-path=/var/www/html --email maksym.yankevych@gmail.com --agree-tos --no-eff-email -d piastrix.tk
+    command: renew
+
