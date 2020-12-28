@@ -1,0 +1,23 @@
+{% extends "service.html" %}
+
+{% block content %}
+<form class="container border" method="POST" action="/">
+        {{ form.csrf_token }}
+        <div class="col-sm">
+            <h2>Make new payment</h2>
+        </div>
+        <div class="mb-3">
+            {{ form.amount.label }} {{ form.amount(size=20) }}
+        </div>
+        <div class="mb-3">
+            {{ form.currency.label }} {{ form.currency}}
+        </div>
+        <div class="mb-3">
+            {{ form.description.label }} {{ form.description }}
+        </div>
+        <div>
+            <button class="btn btn-primary" type="submit">Оплатить</button>
+        </div>
+
+</form>
+{% endblock %}
